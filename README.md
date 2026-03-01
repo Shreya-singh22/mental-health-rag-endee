@@ -70,6 +70,8 @@ Grounded Response
 ---
 
 ## 📂 Project Structure
+
+```
 mental-health-rag-endee/
 │
 ├── src/
@@ -87,6 +89,7 @@ mental-health-rag-endee/
 │
 ├── .gitignore
 └── README.md
+```
 
 ---
 
@@ -133,4 +136,5 @@ python test_rag.py
 
 Deep breathing exercises can help manage anxiety naturally...
 ```
+
 
