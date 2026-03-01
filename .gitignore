@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# HuggingFace cache
+~/.cache/
+cache/
+
+# Endee local data (if created)
+data/
+endee-data/
+
+# Mac OS
+.DS_Store
