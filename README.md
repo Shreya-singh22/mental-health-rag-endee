@@ -93,6 +93,106 @@ mental-health-rag-endee/
 
 ---
 
+## 🗄️ How Endee is Used in This Project
+
+This project uses **Endee** as the vector database service for storing and retrieving embeddings.
+
+Endee runs as a Docker-based server and handles:
+
+- Storing document embeddings
+- Performing similarity search
+- Managing vector collections
+- Serving retrieval requests for the RAG pipeline
+
+---
+
+## ⚙️ Why Endee?
+
+Endee is used because:
+
+- ✅ It supports fast vector similarity search
+- ✅ It integrates easily with Python
+- ✅ It runs locally via Docker
+- ✅ It scales for larger embedding datasets
+- ✅ It separates storage from application logic
+
+This makes the RAG system modular and production-ready.
+
+---
+
+## 🔄 How It Works in This Project
+
+### 1️⃣ Endee Server Starts
+
+The vector database is started using:
+
+```bash
+cd endee-server
+docker-compose up
+```
+
+This launches the Endee container and exposes the vector database service.
+
+---
+
+### 2️⃣ Data Ingestion (`ingest.py`)
+
+When you run:
+
+```bash
+python src/ingest.py
+```
+
+The following happens:
+
+1. The `anxiety.txt` file is loaded.
+2. The text is split into smaller chunks.
+3. Each chunk is converted into an embedding using an embedding model.
+4. The embeddings are stored inside an Endee collection.
+
+At this point, Endee now contains vector representations of your knowledge base.
+
+---
+
+### 3️⃣ Semantic Search (`test_search.py`)
+
+When a query is given:
+
+- The query is converted into an embedding.
+- Endee performs similarity search.
+- The most relevant chunks are returned.
+
+This allows the system to retrieve contextually similar mental health content.
+
+---
+
+### 4️⃣ RAG Pipeline (`rag.py`)
+
+In the full RAG workflow:
+
+1. User asks a question.
+2. Query embedding is generated.
+3. Endee retrieves relevant document chunks.
+4. Retrieved chunks are passed to the LLM.
+5. The LLM generates a grounded, context-aware response.
+
+Endee ensures that responses are based on real stored knowledge rather than pure model memory.
+
+---
+
+## 🛡️ Importance in Mental Health Applications
+
+Using Endee ensures:
+
+- Reduced hallucination
+- Evidence-based responses
+- Context-grounded answers
+- Scalable knowledge storage
+
+This is especially important for mental health applications where reliability matters.
+
+---
+
 ## ⚙️ Setup Instructions
 
 ### 1️⃣ Clone the repository
@@ -136,5 +236,6 @@ python test_rag.py
 
 Deep breathing exercises can help manage anxiety naturally...
 ```
+
 
 
