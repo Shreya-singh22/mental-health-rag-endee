@@ -1,176 +1,136 @@
-🧠 Mental Health RAG Assistant using Endee
-📌 Project Overview
+# 🧠 RAG-Based Mental Health Assistant
 
-This project implements a domain-specific AI assistant for mental health guidance using Retrieval-Augmented Generation (RAG) and Endee as the vector database.
+A fully local Retrieval-Augmented Generation (RAG) system that provides grounded, context-aware mental health guidance using semantic search and a vector database.
 
-The system is designed to provide grounded, context-aware responses instead of generic or hallucinated outputs from standalone language models. By combining semantic search with controlled knowledge retrieval, the assistant ensures responses are based strictly on curated mental health content.
+Built with:
+- 🧠 Sentence Transformers (MiniLM)
+- ⚡ Endee (High-performance vector database)
+- 🤖 Local LLM (Flan-T5)
+- 🐳 Dockerized backend
 
-🎯 Problem Statement
+---
 
-Online mental health advice often suffers from:
+## 🚀 Project Overview
 
-Generic, non-personalized answers
+This project implements a complete Retrieval-Augmented Generation (RAG) pipeline for a Mental Health Assistant.
 
-Unsafe or misleading information
+The system:
 
-Lack of context grounding
+1. Converts mental health knowledge into embeddings
+2. Stores them in a vector database (Endee)
+3. Retrieves relevant context using semantic similarity
+4. Generates grounded responses using a local language model
 
-Hallucinated outputs from LLMs
+Unlike simple chatbots, this system ensures responses are grounded in verified context instead of hallucinated outputs.
 
-This project addresses these issues by:
+---
 
-Storing trusted mental health content in a vector database.
+## 🏗️ Architecture
 
-Retrieving relevant context using semantic similarity search.
+User Query
+    │
+    ▼
+FastAPI Backend (/ask)
+    │
+    ▼
+SentenceTransformer (MiniLM)
+    │
+    ▼
+Query Embedding (384-d vector)
+    │
+    ▼
+Endee Vector Database (Cosine Similarity Search)
+    │
+    ▼
+Top-K Relevant Context Retrieved
+    │
+    ▼
+Prompt Construction
+    │
+    ▼
+Local LLM (Flan-T5)
+    │
+    ▼
+Grounded Response
 
-Generating responses strictly grounded in retrieved information.
+---
 
-The result is a safer, domain-focused AI assistant.
+## 🧩 Tech Stack
 
-🏗️ System Architecture
+| Component | Technology |
+|------------|------------|
+| Embeddings | SentenceTransformers (all-MiniLM-L6-v2) |
+| Vector Database | Endee |
+| LLM | Google Flan-T5 (local) |
+| Backend | Python |
+| Containerization | Docker |
+| Similarity Metric | Cosine Similarity |
+| Precision | float32 |
 
-The system follows a standard RAG pipeline:
+---
 
-1️⃣ Data Ingestion
-
-Mental health text files are chunked into smaller segments.
-
-Each chunk is converted into embeddings using SentenceTransformers.
-
-Embeddings are stored in Endee.
-
-2️⃣ Vector Storage (Endee)
-
-Endee is used as the persistent vector database.
-It is responsible for:
-
-Creating and managing vector indexes
-
-Storing dense embeddings
-
-Performing cosine similarity search
-
-Returning top-k relevant chunks
-
-3️⃣ Query Flow
-
-User submits a question.
-
-Question is converted into an embedding.
-
-Endee retrieves the most similar chunks.
-
-Retrieved context is passed to a local language model.
-
-The model generates a grounded response.
-
-4️⃣ API Layer
-
-FastAPI exposes a /ask endpoint to interact with the assistant.
-Interactive documentation is available via Swagger.
-
-🗂️ Project Structure
+## 📂 Project Structure
 mental-health-rag-endee/
 │
 ├── src/
-│   ├── ingest.py        # Embeds and stores data in Endee
-│   ├── rag.py           # Retrieval + generation logic
-│   ├── app.py           # FastAPI backend
-│   ├── utils.py         # Text chunking utility
-│   ├── test_search.py   # Semantic search testing
-│   └── test_rag.py      # RAG testing
+│   ├── ingest.py          # Embedding + vector ingestion
+│   ├── rag.py             # Retrieval + generation pipeline
+│   ├── test_search.py     # Semantic search testing
+│   ├── test_rag.py        # Full RAG testing
+│   └── utils.py           # Text chunking utility
 │
-├── data/                # Mental health text dataset
-├── endee-server/        # Docker setup for Endee
-├── README.md
-└── .gitignore
-⚙️ Setup Instructions
-1️⃣ Clone the Repository
-git clone https://github.com/<your-username>/mental-health-rag-endee.git
+├── data/
+│   └── anxiety.txt        # Knowledge base file
+│
+├── endee-server/
+│   └── docker-compose.yml # Vector DB server setup
+│
+├── .gitignore
+└── README.md
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/mental-health-rag-endee.git
 cd mental-health-rag-endee
-2️⃣ Create Virtual Environment
+```
+
+### 2️⃣ Create virtual environment
+```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-3️⃣ Start Endee Server (Docker Required)
+```
+
+### 3️⃣ Start Endee Vector Database
+```bash
 cd endee-server
 docker compose up -d
+```
 
-Endee runs locally at:
-
-http://127.0.0.1:8080
-4️⃣ Ingest Data into Endee
+### 4️⃣ Ingest data
+```bash
 cd ../src
 python ingest.py
+```
 
-This step:
+### 5️⃣ Test Semantic Search
+```bash
+python test_search.py
+```
 
-Creates the vector index (if not already present)
+### 6️⃣ Run Full RAG Pipeline
+```bash
+python test_rag.py
+```
+### Expected Output
+```bash
+🧠 Local RAG Response:
 
-Converts text into embeddings
+Deep breathing exercises can help manage anxiety naturally...
+```
 
-Stores vectors inside Endee
-
-5️⃣ Run the API Server
-uvicorn app:app --reload
-
-Open:
-
-http://127.0.0.1:8000/docs
-
-Use the /ask endpoint to query the assistant.
-
-🧪 Example Request
-POST /ask
-
-Request Body:
-
-{
-  "question": "How can I manage anxiety?"
-}
-
-The system will:
-
-Retrieve relevant context from Endee
-
-Generate a grounded response using the local model
-
-🧠 Technical Stack
-
-Python
-
-FastAPI
-
-SentenceTransformers
-
-Transformers (local LLM)
-
-Endee Vector Database
-
-Docker
-
-🔎 How Endee is Used in This Project
-
-Endee serves as the core vector database.
-
-Specifically, it is used to:
-
-Create a vector index with cosine similarity
-
-Store dense embeddings generated from text
-
-Perform efficient nearest-neighbor search
-
-Return top-k relevant chunks for RAG
-
-All semantic search operations are executed through Endee’s index APIs.
-
-This ensures:
-
-Persistent storage
-
-High-performance retrieval
-
-Scalable architecture
-
-Clear separation between storage and generation layers
