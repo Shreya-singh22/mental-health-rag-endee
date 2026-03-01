@@ -26,3 +26,54 @@ Unlike simple chatbots, this system ensures responses are grounded in verified c
 ---
 
 ## 🏗️ Architecture
+User Query
+↓
+Embedding (MiniLM)
+↓
+Vector Search (Endee)
+↓
+Top-K Relevant Chunks
+↓
+Local LLM (Flan-T5)
+↓
+Grounded Response
+
+
+---
+
+## 🧩 Tech Stack
+
+| Component | Technology |
+|------------|------------|
+| Embeddings | SentenceTransformers (all-MiniLM-L6-v2) |
+| Vector Database | Endee |
+| LLM | Google Flan-T5 (local) |
+| Backend | Python |
+| Containerization | Docker |
+| Similarity Metric | Cosine Similarity |
+| Precision | float32 |
+
+---
+
+## 📂 Project Structure
+
+mental-health-rag-endee/
+│
+├── src/
+│ ├── ingest.py # Embedding + vector ingestion
+│ ├── rag.py # Retrieval + Generation pipeline
+│ ├── test_search.py # Semantic search testing
+│ ├── test_rag.py # Full RAG testing
+│ └── utils.py # Text chunking utility
+│
+├── data/
+│ └── anxiety.txt
+│
+├── endee-server/
+│ └── docker-compose.yml
+│
+├── .gitignore
+└── README.md
+
+---
+
