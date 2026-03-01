@@ -55,25 +55,5 @@ Grounded Response
 
 ---
 
-## 📂 Project Structure
 
-mental-health-rag-endee/
-│
-├── src/
-│ ├── ingest.py # Embedding + vector ingestion
-│ ├── rag.py # Retrieval + Generation pipeline
-│ ├── test_search.py # Semantic search testing
-│ ├── test_rag.py # Full RAG testing
-│ └── utils.py # Text chunking utility
-│
-├── data/
-│ └── anxiety.txt
-│
-├── endee-server/
-│ └── docker-compose.yml
-│
-├── .gitignore
-└── README.md
-
----
 
