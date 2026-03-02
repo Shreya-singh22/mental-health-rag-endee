@@ -1,7 +1,7 @@
 from sentence_transformers import SentenceTransformer
 from endee import Endee, Precision
 import os
-from src.utils import chunk_text
+from utils import chunk_text
 
 # Connect to Endee
 db = Endee()
