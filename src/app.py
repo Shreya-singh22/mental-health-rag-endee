@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from src.rag import generate_answer
+from rag import generate_answer
 
 app = FastAPI(title="Mental Health RAG Assistant")
 
